@@ -235,7 +235,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
     a. Prepare the files where each file contains the barcode names for a specific cluster.
 
-        Script: 17_clusters_to_bigwig_preparationBefore.R
+    Script: 17_clusters_to_bigwig_preparationBefore.R
 
     b. Split the files containing the barcode names to allow parallelisation:
     ```
@@ -702,5 +702,5 @@ For Regions bound by ETV2, we intersected the peaks called for the ETV2 V5 datas
        35c_endothelium_scRNAseq_dataset_structure.ipynb
 
     d. Check expression dynamics of ETS factors
-    
+
       Script: 35c_getETS_factors_testDynamics.R
