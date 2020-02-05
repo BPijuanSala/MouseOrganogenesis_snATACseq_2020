@@ -469,18 +469,18 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       sbatch -o log_29b_batch3.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_3.sh
       ```
       d. Make all the files containing the barcodes have the "txt" at the end:
-          ```
-          for i in cluster*; do mv $i $i.txt; done
-          ```
+      ```
+      for i in cluster*; do mv $i $i.txt; done
+      ```
 
       e. Convert BED files to BW:
 
-        Script: 29c_celltypes_to_bigwig_poolBatches_convert_toBW.sh
+      Script: 29c_celltypes_to_bigwig_poolBatches_convert_toBW.sh
 
-        SLURM job:
-          ```
-          sbatch -o log_29c_BW.log --mail-user=bp382@cam.ac.uk --mail-type=END 29c_celltypes_to_bigwig_poolBatches_convert_toBW.sh
-          ```
+      SLURM job:
+      ```
+      sbatch -o log_29c_BW.log --mail-user=bp382@cam.ac.uk --mail-type=END 29c_celltypes_to_bigwig_poolBatches_convert_toBW.sh
+      ```
 
 32) chromVAR on genomic regions
 
