@@ -1,0 +1,11 @@
+echo 'Joining...'
+paste <(cut -f8 promoter_overlaps_temp.bed) <(cut -f1-7 promoter_overlaps_temp.bed) > temp_join1.txt; paste <(cut -f6 ensembl_genes_sorted_mod.txt | tr [a-z] [A-Z]) <(cut -f5 ensembl_genes_sorted_mod.txt) > temp_join2.txt; join -a 1 -j 1 <(sort -k1,1 temp_join1.txt) <(sort -k1,1 temp_join2.txt) > temp_join3.txt
+
+echo 'Replacing spaces...'
+sed 's/ /	/g' temp_join3.txt > temp_join4.txt
+
+echo 'Correcting non-matches...'
+awk '{if (NF == 8) print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8"\tEnsemblIdUnknown"; else print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8"\t"$9;}' temp_join4.txt > temp_join5.txt
+
+echo 'Rearranging...'
+paste <(cut -f2- temp_join5.txt) <(cut -f1 temp_join5.txt) > temp_join6.txt
