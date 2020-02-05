@@ -29,6 +29,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 **Instructions**
 
 1) Reverse complement HiSeq2500 sequencing reads to match NextSeq500
+
     Script: 01_HiSeq2500_revComplement.sh
 
     Depends on: ./bin/reverseComplement_barcodeheader_fastq.pl
@@ -36,17 +37,22 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
 
 2) Map the all fastq files
+
     We sequenced this dataset in two rounds. First, we merged the fastq for the first round:
+
     Script: 02_merge_Fastq_files.sh
 
-    Then, we mapped those reads:
+    Then, we mapped those reads.
+
     Scripts:
+
       03_bowtie2_map_all_together.sh
+
       03_bowtie2_map_large_together.sh
+
       03_bowtie2_map_small_together.sh
 
-    Mapping scripts depend on:
-      ./bin/map_ATACseq_v002.sh
+    Mapping scripts depend on: ./bin/map_ATACseq_v002.sh
 
     For the second round, we mapped it separately:
       Script: 03a_bowtie2_map_separate.sh
