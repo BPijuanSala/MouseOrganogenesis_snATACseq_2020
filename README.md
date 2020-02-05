@@ -436,7 +436,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
     a. Prepare files containing cell barcodes per cell type
 
-        Script: 29a_celltypes_to_bigwig_preparationBefore.R
+    Script: 29a_celltypes_to_bigwig_preparationBefore.R
 
     b. Split files to allow parallelisation:
 
