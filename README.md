@@ -488,40 +488,40 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
       a. Compute chromVAR:
 
-          Script: 33_chromVar_computation_motifsv2_celltype_all.R
+      Script: 33_chromVar_computation_motifsv2_celltype_all.R
 
       b. Run wilcoxon rank sum tests to find cell type specific peaks:
 
-          Script: 33b_TF_enrichment_analysis_wilcoxon_allpeaks.ipynb
+      Script: 33b_TF_enrichment_analysis_wilcoxon_allpeaks.ipynb
 
       c. Get top TFs enriched.
 
-          Script: 33b_chromVAR_celltype_specific_TFs_allpeaks.R
+      Script: 33b_chromVAR_celltype_specific_TFs_allpeaks.R
 
       d. Assess expression levels of TFs enriched in scRNA-seq dataset (Pijuan-Sala et al., Nature, 2019)
 
-          Script: 33c_scRNAseq_E825_analysis_TFexpression.R
+      Script: 33c_scRNAseq_E825_analysis_TFexpression.R
 
-          This script runs along 33b_chromVAR_celltype_specific_TFs_allpeaks.R; once the top TFs are computed, this script (33c) should be run to obtain their expression levels. Then, the analysis continues on 33b, where the expression is compared with the enrichment score.
+      This script runs along 33b_chromVAR_celltype_specific_TFs_allpeaks.R; once the top TFs are computed, this script (33c) should be run to obtain their expression levels. Then, the analysis continues on 33b, where the expression is compared with the enrichment score.
 
       e. Output sequence logos for TF motifs used
 
-          Script: 33d_sequenceLogos_chromVAR.R
+      Script: 33d_sequenceLogos_chromVAR.R
 
 
 33) Peak annotation
 
     a. Generate file with no "chr"
 
-        ```
-        sed 's/^chr//g' peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist.bed >peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist_nochr.bed
-        ```
+      ```
+      sed 's/^chr//g' peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist.bed >peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist_nochr.bed
+      ```
 
     b. Execute the code here to annotate regions (intergenic, intronic, exonic, TSS...)
 
-        Script: 32b_peakAnnotation.sh
+      Script: 32b_peakAnnotation.sh
 
-        Depends on: HOMER
+      Depends on: HOMER
 
     c. Match peaks to genes ensembl
 
