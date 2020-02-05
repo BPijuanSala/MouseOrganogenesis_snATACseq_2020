@@ -46,11 +46,11 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
     Scripts:
 
-      03_bowtie2_map_all_together.sh
+      ⋅⋅*03_bowtie2_map_all_together.sh
 
-      03_bowtie2_map_large_together.sh
+      ⋅⋅*03_bowtie2_map_large_together.sh
 
-      03_bowtie2_map_small_together.sh
+      ⋅⋅*03_bowtie2_map_small_together.sh
 
     Mapping scripts depend on: ./bin/map_ATACseq_v002.sh
 
