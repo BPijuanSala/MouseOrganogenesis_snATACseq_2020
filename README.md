@@ -589,7 +589,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
     * 38_Heptad_peaks_overlap.R
 
 
-***_ALLANTOIC-HAEMATO-ENDOTHELIAL LANDSCAPE_***
+***_Allantoic-haemato-endothelial landscape_***
 
 37) Enrichment scores for TAL1 ChIP-seq of haemangioblasts, haemogenic endothelium and HP
 
@@ -654,21 +654,21 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
 For Regions bound by ETV2, we intersected the peaks called for the ETV2 V5 dataset with the regions assigned to each pattern.
 
-    ```
-    for i in {1..12}
-    do
-      echo "cluster $i lines"
-      bedFile='/path/to/directory/sample_pooled_preprocess_revision1/18_endothelium_analysis/data/DPT_clusters_asGut/snATACseq_endothelium_eryAl_DPT_cluster_'$i'.txt.bed'
-      etv2=/home/USSR/codex-pipeline/Data/Rebecca/Blanca/sample_pooled_preprocess_revision1/19_peaks_other_datasets/peaks_bed/ETV2_EB35_pV5_peaks_mm10.bed
+```
+for i in {1..12}
+do
+  echo "cluster $i lines"
+  bedFile='/path/to/directory/sample_pooled_preprocess_revision1/18_endothelium_analysis/data/DPT_clusters_asGut/snATACseq_endothelium_eryAl_DPT_cluster_'$i'.txt.bed'
+  etv2=/home/USSR/codex-pipeline/Data/Rebecca/Blanca/sample_pooled_preprocess_revision1/19_peaks_other_datasets/peaks_bed/ETV2_EB35_pV5_peaks_mm10.bed
 
-      cat $bedFile | wc -l
-      echo "cluster $i intersected"
+  cat $bedFile | wc -l
+  echo "cluster $i intersected"
 
-      /home/USSR/bp382/bin/bedtools2/bin/bedtools intersect -a $bedFile -b $etv2 -wa | wc -l
-    done
+  /home/USSR/bp382/bin/bedtools2/bin/bedtools intersect -a $bedFile -b $etv2 -wa | wc -l
+done
 
-    #To make the plots, the numbers are typed in the script 34h_endothelium_trajectory_all_ery_server_v2.R (bottom part)
-    ```
+#To make the plots, the numbers are typed in the script 34h_endothelium_trajectory_all_ery_server_v2.R (bottom part)
+```
 
 41) TF motif enrichment analysis using HOMER on each pattern
 
