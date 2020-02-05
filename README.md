@@ -263,9 +263,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
     d. Make all the files containing the barcodes per cluster have the ".txt" at the end:
 
-        ```
-        for i in cluster*; do mv $i $i.txt; done
-        ```
+    ```
+    for i in cluster*; do mv $i $i.txt; done
+    ```
 
     e. Run script to pool files and convert to BW.
 
