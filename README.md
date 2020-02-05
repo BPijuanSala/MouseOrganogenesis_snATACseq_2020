@@ -269,13 +269,14 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
     e. Run script to pool files and convert to BW.
 
-        Script: 19_clusters_to_bigwig_poolBatches_convert_toBW.sh
+      Script: 19_clusters_to_bigwig_poolBatches_convert_toBW.sh
 
-        SLURM job:
-        ```
-        sbatch -o 19_pool_BW.log --mail-user=bp382@cam.ac.uk --mail-type=END 19_clusters_to_bigwig_poolBatches_convert_toBW.sh
-        ```
-        
+      SLURM job:
+
+      ```
+      sbatch -o 19_pool_BW.log --mail-user=bp382@cam.ac.uk --mail-type=END 19_clusters_to_bigwig_poolBatches_convert_toBW.sh
+      ```
+
     f. Run script to call peaks:
 
           Script: 20_clusters_callPeaks.sh
