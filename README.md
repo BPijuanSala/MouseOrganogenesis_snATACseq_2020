@@ -371,9 +371,10 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       Script: 24_barcodeStats_readsInPeaks.sh
 
       SLURM job:
-        ```
-        sbatch -o 24_barcodeStats.log --mail-user=bp382@cam.ac.uk --mail-type=END 24_barcodeStats_readsInPeaks.sh
-        ```
+
+      ```
+      sbatch -o 24_barcodeStats.log --mail-user=bp382@cam.ac.uk --mail-type=END 24_barcodeStats_readsInPeaks.sh
+      ```
 
     b. Perform QC:
 
