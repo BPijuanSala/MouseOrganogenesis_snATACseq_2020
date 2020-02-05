@@ -279,12 +279,12 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
     f. Run script to call peaks:
 
-          Script: 20_clusters_callPeaks.sh
+      Script: 20_clusters_callPeaks.sh
 
-          SLURM job:
-            ```
-            sbatch -o 20_callPeaks.log --mail-user=bp382@cam.ac.uk --mail-type=END 20_clusters_callPeaks.sh
-            ```
+      SLURM job:
+      ```
+      sbatch -o 20_callPeaks.log --mail-user=bp382@cam.ac.uk --mail-type=END 20_clusters_callPeaks.sh
+      ```
 
     g. Merge peaks:
 
@@ -292,9 +292,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
       SLURM job:
 
-        ```
-        sbatch -o 21_mergePeaks.log --mail-user=bp382@cam.ac.uk --mail-type=END 21_merging_peaks.sh
-        ```
+      ```
+      sbatch -o 21_mergePeaks.log --mail-user=bp382@cam.ac.uk --mail-type=END 21_merging_peaks.sh
+      ```
 
 24) Make matrix
 
