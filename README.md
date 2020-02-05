@@ -7,7 +7,10 @@
 
 >  Description: README file explaining the scripts and the order they were executed.
 
+
+
 **Notes:**
+
   - Download all the scripts and check them. You should change path to directories to your own. I have tried adding "/path/to/directory" to all those places (Sorry if I missed any!)
   - Download and install https://github.com/r3fang/snATAC
   - Place snATAC_bmat_BPS inside the bin directory of ./snATAC/bin/
@@ -15,15 +18,23 @@
     bedtools
     Samtools
 
+
+
 **Directory**
+
 wd=/path/to/directory/sample_pooled_preprocess_revision1
 
 
+
 **Instructions**
+
 1) Reverse complement HiSeq2500 sequencing reads to match NextSeq500
+
   Script: 01_HiSeq2500_revComplement.sh
-  Depends on:
-    ./bin/reverseComplement_barcodeheader_fastq.pl
+
+  Depends on: ./bin/reverseComplement_barcodeheader_fastq.pl
+
+
 
 2) Map the all fastq files
     We sequenced this dataset in two rounds. First, we merged the fastq for the first round:
