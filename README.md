@@ -342,9 +342,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
     Output: $wd/11_matrix_afterClusterQC
 
     Depends on:
-        * 23_Sample_after_clusterPeakCall_makeMTX_subset00_01.R
-        * 23_Sample_after_clusterPeakCall_makeMTX_subset02_03.R
-        * 23_Sample_after_clusterPeakCall_makeMTX.R
+    * 23_Sample_after_clusterPeakCall_makeMTX_subset00_01.R
+    * 23_Sample_after_clusterPeakCall_makeMTX_subset02_03.R
+    * 23_Sample_after_clusterPeakCall_makeMTX.R
 
     d. Convert matrix into mtx raw
 
