@@ -1,13 +1,12 @@
-#######################################################################################
-##  Blanca Pijuan-Sala
-##  Gottgens Lab
-##  University of Cambridge, UK
-##  December 2019
-##  DESCRIPTION: README file explaining the scripts and the order they were executed.
-#######################################################################################
+# MouseOrganogenesis_snATACseq_2020
+> Code accompanying publication Pijuan-Sala et al., Nat. Cell Biol., 2020.
+
+>  Author: Blanca Pijuan-Sala, Gottgens Lab,  University of Cambridge, UK
+>  Date: February 2020
+>  Description: README file explaining the scripts and the order they were executed.
 
 Notes:
-  - Check all scripts and change path to directories to your own. I have tried adding "/path/to/directory" to all those places (Sorry if I missed any!)
+  - Download all the scripts and check them. You should change path to directories to your own. I have tried adding "/path/to/directory" to all those places (Sorry if I missed any!)
   - Download and install https://github.com/r3fang/snATAC
   - Place snATAC_bmat_BPS inside the bin directory of ./snATAC/bin/
   - Install:
