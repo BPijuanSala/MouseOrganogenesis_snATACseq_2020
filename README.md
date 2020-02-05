@@ -1,11 +1,13 @@
 # MouseOrganogenesis_snATACseq_2020
-> Code accompanying publication Pijuan-Sala et al., Nat. Cell Biol., 2020.
+### Code accompanying publication Pijuan-Sala et al., Nat. Cell Biol., 2020.
 
 >  Author: Blanca Pijuan-Sala, Gottgens Lab,  University of Cambridge, UK
+
 >  Date: February 2020
+
 >  Description: README file explaining the scripts and the order they were executed.
 
-Notes:
+**Notes:**
   - Download all the scripts and check them. You should change path to directories to your own. I have tried adding "/path/to/directory" to all those places (Sorry if I missed any!)
   - Download and install https://github.com/r3fang/snATAC
   - Place snATAC_bmat_BPS inside the bin directory of ./snATAC/bin/
@@ -13,8 +15,11 @@ Notes:
     bedtools
     Samtools
 
+**Directory**
 wd=/path/to/directory/sample_pooled_preprocess_revision1
 
+
+**Instructions**
 1) Reverse complement HiSeq2500 sequencing reads to match NextSeq500
   Script: 01_HiSeq2500_revComplement.sh
   Depends on:
@@ -48,15 +53,18 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
 
 4) Sort the combined SAM file
+    ```
     samtools sort -O sam -T combined.sorted -o combined.sorted.sam combined.sam
+    ```
 
 
     Output: $wd/01_SAM/combined.sorted.sam
 
 
 5) Convert the combined & sorted SAM file to BAM
+    ```
     samtools view -b -o new.sorted.bam combined.sorted.sam
-
+```
     Output: $wd/01_BAM_BED/new.sorted.bam
 
 
@@ -69,9 +77,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
     Output folder: $wd/02_BAM_BED/
 
 7) Filter out weird mapped reads.
-
+```
     grep -e "^[0-9]" -e "^X" -e "^Y" embryo_revision1_nuclearGenes.bed >embryo_revision1_nuclearGenes.bed.filtered
-
+```
     Output: $wd/02_BAM_BED/
 
 8) Run peak calling in sample with no QC
@@ -105,15 +113,16 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
     Output: $wd/05_MACS2_afterQC/
 
     SLURM job:
+    ```
     sbatch -o 08_callPeaks_firstQC.log --mail-user=bp382@cam.ac.uk --mail-type=END 08_callPeaks_pooledSample_after_first_QC.sh
-
+```
 
 12) Split peaks file into 4 files:
-
+```
     cd $wd/05_MACS2_afterQC
     file=embryo_revision1_nuclearGenes_passedQC_summits_extended500bp_overlapped_noblacklist_TSS_merged.bed
     split -l 75855  -d $file $file'_subset'
-
+```
 13) Make matrix of barcodes that passed QC using peaks called in sample that passed QC
 
     Scripts:
@@ -127,12 +136,12 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       snATAC_bmat_BPS
 
     SLURM jobs:
-
+```
     sbatch -o 10_makebinMat_00.log --mail-user=bp382@cam.ac.uk --mail-type=END 10_Sample_after_first_QC_makeBinMatrix_subset00.sh
     sbatch -o 10_makebinMat_01.log --mail-user=bp382@cam.ac.uk --mail-type=END 10_Sample_after_first_QC_makeBinMatrix_subset01.sh
     sbatch -o 10_makebinMat_02.log --mail-user=bp382@cam.ac.uk --mail-type=END 10_Sample_after_first_QC_makeBinMatrix_subset02.sh
     sbatch -o 10_makebinMat_03.log --mail-user=bp382@cam.ac.uk --mail-type=END 10_Sample_after_first_QC_makeBinMatrix_subset03.sh
-
+```
     Output: $wd/06_matrix
 
 14) Convert matrix into mtx binary
@@ -140,9 +149,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
     Script: 11_Sample_after_first_QC_makeMTX.sh
 
     SLURM job:
-
+```
     sbatch -o 11_binMat_mtx.log --mail-user=bp382@cam.ac.uk --mail-type=END 11_Sample_after_first_QC_makeMTX.sh
-
+```
     Output: $wd/06_matrix
 
     Depends on:
@@ -155,10 +164,10 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
     Script:   11b_Sample_after_first_QC_makeMTX_raw.sh
 
     SLURM job:
-
+```
     sbatch -o 11b_raw_binMat_mtx.log --mail-user=bp382@cam.ac.uk --mail-type=END 11b_Sample_after_first_QC_makeMTX_raw.sh
 
-
+```
     Output: $wd/06_matrix
 
     Depends on:
@@ -168,19 +177,20 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
 
 16) Get peak Names:
+```
     cd $wd/05_MACS2_afterQC
 
     sed 's/\t/_/g' embryo_revision1_nuclearGenes_passedQC_summits_extended500bp_overlapped_noblacklist_TSS_merged.bed >../06_matrix/embryo_revision1_allPeaks_passedQC_peakNames.txt
-
+```
 
 17) Get barcode names:
-
+```
     cp embryo_revision1.xgi ../06_matrix/embryo_revision1_allPeaks_passedQC_barcodeNames.xgi
-
+```
 18) Make file with chromosomes not wanted (this will be used to remove them):
-
+```
     grep -v -e "chr[0-9]" -e "chrX" -e "chrY" embryo_revision1_allPeaks_passedQC_peakNames.txt  > chr_not_wanted.txt
-
+```
 19) Generate metadata file
 
     Script: 12_metadata_creation_Sample_after_first_QC.R
@@ -211,7 +221,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
 
     b. Split the files containing the barcode names to allow parallelisation:
-
+```
     for i in *.txt; do
       split -l 370  -d $i $i'_subset'
     done
@@ -223,7 +233,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
     mkdir batch_3
 
     ####Move the files into three folders: batch_1, batch_2, batch_3
-
+```
     c. Grab reads containing those barcodes from the BED file
     Scripts:
       18_clusters_to_bigwig_grab_barcodes_batch_1.sh
@@ -232,36 +242,39 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
 
     d. Make all the files containing the barcodes per cluster have the ".txt" at the end:
-
+```
         for i in cluster*; do mv $i $i.txt; done
-
+```
     e. Run script to pool files and convert to BW.
 
         Script: 19_clusters_to_bigwig_poolBatches_convert_toBW.sh
 
         SLURM job:
+        ```
           sbatch -o 19_pool_BW.log --mail-user=bp382@cam.ac.uk --mail-type=END 19_clusters_to_bigwig_poolBatches_convert_toBW.sh
-
+```
     f. Run script to call peaks:
           Script: 20_clusters_callPeaks.sh
 
           SLURM job:
+          ```
             sbatch -o 20_callPeaks.log --mail-user=bp382@cam.ac.uk --mail-type=END 20_clusters_callPeaks.sh
-
+```
     g. Merge peaks:
       Script: 21_merging_peaks.sh
       SLURM job:
+      ```
         sbatch -o 21_mergePeaks.log --mail-user=bp382@cam.ac.uk --mail-type=END 21_merging_peaks.sh
-
+```
 
 24) Make matrix
 
     a. Split peaks file into 4 files to make computation easier:
-
+```
     cd $wd/10_peaks_all
     file=peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist.bed
     split -l 76297  -d $file $file'_subset'
-
+```
     b. Make matrix of barcodes that passed QC using peak set obtained above.
 
     Scripts:
@@ -275,11 +288,12 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       ./bin/snATAC_bmat_BPS
 
     SLURM jobs:
+    ```
       sbatch -o 22_makebinMat_00.log --mail-user=bp382@cam.ac.uk --mail-type=END 22_Sample_after_clusterPeakCall_makeBinMatrix_subset00.sh
       sbatch -o 22_makebinMat_01.log --mail-user=bp382@cam.ac.uk --mail-type=END 22_Sample_after_clusterPeakCall_makeBinMatrix_subset01.sh
       sbatch -o 22_makebinMat_02.log --mail-user=bp382@cam.ac.uk --mail-type=END 22_Sample_after_clusterPeakCall_makeBinMatrix_subset02.sh
       sbatch -o 22_makebinMat_03.log --mail-user=bp382@cam.ac.uk --mail-type=END 22_Sample_after_clusterPeakCall_makeBinMatrix_subset03.sh
-
+```
 
     Output: $wd/11_matrix_afterClusterQC
 
@@ -288,9 +302,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       Script: 23_Sample_after_clusterPeakCall_makeMTX.sh
 
       SLURM job:
-
+```
       sbatch -o 23_binMat_mtx.log --mail-user=bp382@cam.ac.uk --mail-type=END 23_Sample_after_clusterPeakCall_makeMTX.sh
-
+```
     Output: $wd/11_matrix_afterClusterQC
 
     Depends on:
@@ -303,8 +317,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       Script:   23b_Sample_after_clusterPeakCall_makeMTX_raw.sh
 
       SLURM job:
+      ```
         sbatch -o 23b_raw_binMat_mtx.log --mail-user=bp382@cam.ac.uk --mail-type=END 23b_Sample_after_clusterPeakCall_makeMTX_raw.sh
-
+```
 
         Output: $wd/11_matrix_afterClusterQC
 
@@ -320,11 +335,12 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       Script: 24_barcodeStats_readsInPeaks.sh
 
       SLURM job:
+      ```
         sbatch -o 24_barcodeStats.log --mail-user=bp382@cam.ac.uk --mail-type=END 24_barcodeStats_readsInPeaks.sh
-
+```
     b. Perform QC:
       Script: 25_reads_in_peaks_QC.R
-      #This script also adds information on the gates where nuclei were sorted.
+      This script also adds information on the gates where nuclei were sorted.
 
 
 
@@ -336,35 +352,37 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
         26b_cistopic_readsinpeaks_24.R
 
     SLURM job:
+    ```
     sbatch -o log_26b_cistopic_24.log --mail-user=bp382@cam.ac.uk --mail-type=END 26b_cistopic_24.sh
-
+```
 
 27) Get peak names and barcode names
+```
       cd /path/to/directory/sample_pooled_preprocess_revision1/10_peaks_all
       sed 's/\t/_/g' peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist.bed >../11_matrix_afterClusterQC/embryo_revision1_allPeaks_passedQC_peakNames.txt
 
       cd /path/to/directory/sample_pooled_preprocess_revision1/04_barcodeStats
 
       cp embryo_revision1.xgi ../11_matrix_afterClusterQC/embryo_revision1_allPeaks_passedQC_barcodeNames.xgi
-
+```
 28) Visualise the data using cisTopic and compute clusters
     Script: 26_Final_visualisation_and_clustering.ipynb
 
 
 
 29) Find called peaks at TSS:
-
+```
     bedTSS=/path/to/directory/bin/Mus_musculus.GRCm38.92_TSS_minus500bp.bed
     bedFile=/path/to/directory/sample_pooled_preprocess_revision1/10_peaks_all/peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist.bed
 
     /path/to/directory/bin/bedtools2/bin/bedtools intersect -a $bedFile -b $bedTSS -wa -wb >peaks_celltypes_inTSS.bed
     awk '{print $1"_"$2"_"$3;}' peaks_celltypes_inTSS.bed >peaks_celltypes_inTSS.txt
 
-
+```
 
 30) Generate final metadata and plots after filtering peaks
     Script: 27_metaData_and_plots_afterPeakFilter.R
-    #This includes heatmap of TSS
+    This includes heatmap of TSS.
 
 
 31) Generate bigWig tracks for each cell type
@@ -374,7 +392,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
         Script: 29a_celltypes_to_bigwig_preparationBefore.R
 
     b. Split files to allow parallelisation:
-
+```
       cd /path/to/directory/sample_pooled_preprocess_revision1/17_BigWig_celltypes/barcodes
       for i in *.txt; do
         split -l 320  -d $i $i'_subset'
@@ -386,7 +404,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       mkdir batch_3
 
       ####Move the files into three folders: batch_1, batch_2, batch_3
-
+```
       c. Grab barcodes from BED file.
       Scripts:
         29b_celltypes_to_bigwig_batch_1.sh
@@ -394,20 +412,22 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
         29b_celltypes_to_bigwig_batch_3.sh
 
       SLURM jobs:
+      ```
         sbatch -o log_29b_batch1.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_1.sh
         sbatch -o log_29b_batch2.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_2.sh
         sbatch -o log_29b_batch3.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_3.sh
-
+```
       d. Make all the files containing the barcodes have the "txt" at the end:
-
+```
           for i in cluster*; do mv $i $i.txt; done
-
+```
       e. Convert BED files to BW:
         Script: 29c_celltypes_to_bigwig_poolBatches_convert_toBW.sh
 
         SLURM job:
+        ```
           sbatch -o log_29c_BW.log --mail-user=bp382@cam.ac.uk --mail-type=END 29c_celltypes_to_bigwig_poolBatches_convert_toBW.sh
-
+```
 32) chromVAR on genomic regions
       Output= $wd/16_chromVAR
 
@@ -424,7 +444,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
       d. Assess expression levels of TFs enriched in scRNA-seq dataset (Pijuan-Sala et al., Nature, 2019)
           Script: 33c_scRNAseq_E825_analysis_TFexpression.R
-          #This script runs along 33b_chromVAR_celltype_specific_TFs_allpeaks.R; once the top TFs are computed, this script (33c) should be run to obtain their expression levels. Then, the analysis continues on 33b, where the expression is compared with the enrichment score
+          This script runs along 33b_chromVAR_celltype_specific_TFs_allpeaks.R; once the top TFs are computed, this script (33c) should be run to obtain their expression levels. Then, the analysis continues on 33b, where the expression is compared with the enrichment score.
 
       e. Output sequence logos for TF motifs used
           Script: 33d_sequenceLogos_chromVAR.R
@@ -433,9 +453,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 33) Peak annotation
 
     a. Generate file with no "chr"
-
+```
         sed 's/^chr//g' peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist.bed >peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist_nochr.bed
-
+```
     b. Execute the code here to annotate regions (intergenic, intronic, exonic, TSS...)
         Script: 32b_peakAnnotation.sh
         Depends on: HOMER
@@ -446,7 +466,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       https://www.ensembl.org/biomart/martview/9f07ba72335711044352afa5af3443c1
 
       - Run the following code:
-
+```
         awk '{print $4"\t"$3"\t"$5"\t"$6"\t"$1"\t"$2;}' mm10_geneEnsembl.txt >mm10_geneEnsembl_sorted0.txt
         grep -e "^[0-9]" -e "^Y" -e "^X" -e "^MT" mm10_geneEnsembl_sorted0.txt >mm10_geneEnsembl_sorted.txt
 
@@ -472,7 +492,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
         cat peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist_nochr_geneAssignment_distance.bed UNMAPPED_PEAKS_mod.txt >peaks_celltypes_extended500bp_qvalThreshold_overlapped_TSSGeneralPeaks_merged_noblacklist_nochr_geneAssignment_distance_plusUnmapped.bed
 
-
+```
 34) Define cell type-specific regions
     Output: $wd/14_visualisation
 
@@ -481,12 +501,16 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       Script: 31_Visualisation_genomic_regions_nucleiAsVars_TFIDF_in_mat.ipynb
 
     b. Define cell type-specific regions:
-      32_Define_celltype_specific_regions.R #One part is in the server and another locally
-      #This script also conveys all the peak annotation.
-      #Here you will also find the analysis of GATA binding sites in topics
-      SLURM job:
-      sbatch -o log_32_celltypepeaks.log --mail-user=bp382@cam.ac.uk --mail-type=END 32_Define_celltype_specific_regions.sh
+      32_Define_celltype_specific_regions.R
 
+      One part is run in the server and another locally.
+      This script also conveys all the peak annotation.
+      Here you will also find the analysis of GATA binding sites in topics
+
+      SLURM job:
+```
+      sbatch -o log_32_celltypepeaks.log --mail-user=bp382@cam.ac.uk --mail-type=END 32_Define_celltype_specific_regions.sh
+```
 
 35) Find regions unique to each cisTopic and perform TF enrichment analyses
     Script: 26e_cisTopic_TFmotif_unique.R
@@ -496,13 +520,11 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
              38_Heptad_peaks_overlap.R
 
 
-####========================================
-## ALLANTOIC-HAEMATO-ENDOTHELIAL LANDSCAPE
-####========================================
+***_ALLANTOIC-HAEMATO-ENDOTHELIAL LANDSCAPE_***
 
 37) Enrichment scores for TAL1 ChIP-seq of haemangioblasts, haemogenic endothelium and HP
     a. Obtain ChIP-seq data
-
+```
       wd=/path/to/directory/sample_pooled_preprocess_revision1/19_peaks_other_datasets
       cd $wd
       cp /path/to/directory/Experiments/PhD_BPS53/preprocess/sample_pooled_preprocess/round4/21_heptad_peaks/heptad_mm9_mm10_mod.bed ./
@@ -524,22 +546,24 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       mv GSM1436367-8_p1e-4_400bp.bed ./ETV2_EB35_pV5_peaks_mm10.bed
       mv *.bed ./peaks_bed/
 
-
+```
     b. Recompute cisTopic on landscape with allantois, endothelium and erythroid cell types
        Script: 34b_endothelium_analysis_cistopic_ery_endo_allantois.R
 
        SLURM job:
+       ```
        sbatch -o log_34b_ery_endo_allantois.log --mail-user=bp382@cam.ac.uk --mail-type=END 34b_endothelium_analysis_cistopic_ery_endo_allantois.sh
-
+```
     b. Compute ChIP-seq enrichment score
        Script: 34i_endothelium_all_ery_cisTopic_ChIPseq_peaks.R
 
        SLURM job:
+       ```
        sbatch -o log_34i_cisTopic_endothelium_ChIPseq.log --mail-user=bp382@cam.ac.uk --mail-type=END 34i_endothelium_all_ery_cisTopic_ChIPseq_peaks.sh
-
+```
 38) Compute PAGA structure of allantoic-haemato-endothelial landscape
     Script: 34a_endothelium_analysis_ery_endo_allantois_publication.ipynb
-    #In this script, we also compute pseudotime from endothelium to allantois.
+    In this script, we also compute pseudotime from endothelium to allantois.
 
 
 39) Find dynamically accessible regions
@@ -549,6 +573,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
 40) Find regions bound by ETV2 in dynamically accessible regions by pattern
 For Regions bound by ETV2, we intersected the peaks called for the ETV2 V5 dataset with the regions assigned to each pattern.
+```
     for i in {1..12}
     do
       echo "cluster $i lines"
@@ -562,20 +587,22 @@ For Regions bound by ETV2, we intersected the peaks called for the ETV2 V5 datas
     done
 
     #To make the plots, the numbers are typed in the script 34h_endothelium_trajectory_all_ery_server_v2.R (bottom part)
-
+```
 
 41) TF motif enrichment analysis using HOMER on each pattern
     a. Run commands
+    ```
     cd /path/to/directory/sample_pooled_preprocess_revision1/18_endothelium_analysis/data/DPT_clusters_asGut
 
     for i in snATACseq_endothelium_eryAl_DPT_cluster_*.txt; do sed 's/_/\t/g' $i >$i.bed; done
-
+```
     b. Run motif enrichment
     Script: 34m_endothelium_trajectory_all_ery_TF_enrichment.sh
 
     SLURM job:
+    ```
     sbatch -o log_34m_DPT.log --mail-user=bp382@cam.ac.uk --mail-type=END 34m_endothelium_trajectory_all_ery_TF_enrichment.sh
-
+```
     c. Plot heatmap of enriched motifs
     Script: 34m_endothelium_allantois_trajectory_patterns_heatmap_motifs.R
 
