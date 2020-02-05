@@ -351,16 +351,17 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
       Script:   23b_Sample_after_clusterPeakCall_makeMTX_raw.sh
 
       SLURM job:
-        ```
-        sbatch -o 23b_raw_binMat_mtx.log --mail-user=bp382@cam.ac.uk --mail-type=END 23b_Sample_after_clusterPeakCall_makeMTX_raw.sh
-        ```
 
-        Output: $wd/11_matrix_afterClusterQC
+      ```
+      sbatch -o 23b_raw_binMat_mtx.log --mail-user=bp382@cam.ac.uk --mail-type=END 23b_Sample_after_clusterPeakCall_makeMTX_raw.sh
+      ```
 
-        Depends on:
-            * 23b_Sample_after_clusterPeakCall_makeMTX_subset00_01_raw.R
-            * 23b_Sample_after_clusterPeakCall_makeMTX_subset02_03_raw.R
-            * 23b_Sample_after_clusterPeakCall_makeMTX_raw.R
+      Output: $wd/11_matrix_afterClusterQC
+
+      Depends on:
+      * 23b_Sample_after_clusterPeakCall_makeMTX_subset00_01_raw.R
+      * 23b_Sample_after_clusterPeakCall_makeMTX_subset02_03_raw.R
+      * 23b_Sample_after_clusterPeakCall_makeMTX_raw.R
 
 
 25) Perform Cell QC to filter based on reads in peaks
