@@ -29,10 +29,9 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 **Instructions**
 
 1) Reverse complement HiSeq2500 sequencing reads to match NextSeq500
+    Script: 01_HiSeq2500_revComplement.sh
 
-  Script: 01_HiSeq2500_revComplement.sh
-
-  Depends on: ./bin/reverseComplement_barcodeheader_fastq.pl
+    Depends on: ./bin/reverseComplement_barcodeheader_fastq.pl
 
 
 
