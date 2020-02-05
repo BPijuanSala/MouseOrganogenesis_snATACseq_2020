@@ -457,17 +457,17 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
 
       Scripts:
 
-        * 29b_celltypes_to_bigwig_batch_1.sh
-        * 29b_celltypes_to_bigwig_batch_2.sh
-        * 29b_celltypes_to_bigwig_batch_3.sh
+      * 29b_celltypes_to_bigwig_batch_1.sh
+      * 29b_celltypes_to_bigwig_batch_2.sh
+      * 29b_celltypes_to_bigwig_batch_3.sh
 
       SLURM jobs:
 
-        ```
-        sbatch -o log_29b_batch1.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_1.sh
-        sbatch -o log_29b_batch2.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_2.sh
-        sbatch -o log_29b_batch3.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_3.sh
-        ```
+      ```
+      sbatch -o log_29b_batch1.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_1.sh
+      sbatch -o log_29b_batch2.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_2.sh
+      sbatch -o log_29b_batch3.log --mail-user=bp382@cam.ac.uk --mail-type=END 29b_celltypes_to_bigwig_batch_3.sh
+      ```
       d. Make all the files containing the barcodes have the "txt" at the end:
           ```
           for i in cluster*; do mv $i $i.txt; done
