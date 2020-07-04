@@ -117,7 +117,7 @@ wd=/path/to/directory/sample_pooled_preprocess_revision1
     Output folder: $wd/04_barcodeStats/
 
 
-10) Perform nuclei QC. Here we have set promoter coverage > 0.03 and number of reads in peaks > 2000.
+10) Perform nuclei QC. Here we have set promoter coverage > 0.03 and number of reads > 2000.
 
     Script: 07_nuclei_QC.R
 
